@@ -1,0 +1,25 @@
+# Build outputs
+.build/
+.swiftpm/
+build-icon.iconset/
+Package.resolved
+DerivedData/
+
+# Xcode
+*.xcodeproj/
+xcuserdata/
+*.xcuserstate
+
+# Editors
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Logs / crash reports
+*.log
+*.ips
+
+# Local
+sessionsummary.md
