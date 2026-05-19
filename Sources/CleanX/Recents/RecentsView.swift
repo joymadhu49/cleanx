@@ -48,17 +48,10 @@ struct RecentsView: View {
                 .menuStyle(.borderlessButton)
                 .frame(width: 28)
             }
-            Button(action: onClose) {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.system(size: 16))
-                    .foregroundStyle(.secondary)
-            }
-            .buttonStyle(.plain)
-            .keyboardShortcut(.cancelAction)
         }
-        .padding(.horizontal, 18)
-        .padding(.top, 14)
-        .padding(.bottom, 10)
+        .padding(.horizontal, 20)
+        .padding(.top, 18)
+        .padding(.bottom, 12)
     }
 
     private var carousel: some View {
@@ -84,18 +77,41 @@ struct RecentsView: View {
     }
 
     private var empty: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 14) {
             Image(systemName: "photo.on.rectangle.angled")
-                .font(.system(size: 36))
+                .font(.system(size: 44, weight: .light))
                 .foregroundStyle(.tertiary)
-            Text("No captures yet")
-                .font(.headline)
-                .foregroundStyle(.secondary)
-            Text("Capture with ⌘⌥⇧2 / 3 / 4 or drop image files here.")
-                .font(.caption)
-                .foregroundStyle(.tertiary)
+            VStack(spacing: 4) {
+                Text("No captures yet")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                Text("Take a screenshot to get started.")
+                    .font(.system(size: 12))
+                    .foregroundStyle(.tertiary)
+            }
+            HStack(spacing: 10) {
+                emptyHotkeyButton(title: "Area", combo: "⌘⌥⇧2", action: { (NSApp.delegate as? AppDelegate)?.captureArea() })
+                emptyHotkeyButton(title: "Window", combo: "⌘⌥⇧3", action: { (NSApp.delegate as? AppDelegate)?.captureWindow() })
+                emptyHotkeyButton(title: "Fullscreen", combo: "⌘⌥⇧4", action: { (NSApp.delegate as? AppDelegate)?.captureFullscreen() })
+            }
+            .padding(.top, 6)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(20)
+    }
+
+    private func emptyHotkeyButton(title: String, combo: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            VStack(spacing: 2) {
+                Text(title).font(.system(size: 12, weight: .medium))
+                Text(combo).font(.system(size: 10, design: .monospaced)).foregroundStyle(.secondary)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
+            .background(RoundedRectangle(cornerRadius: 8).fill(.white.opacity(0.06)))
+            .overlay(RoundedRectangle(cornerRadius: 8).stroke(.white.opacity(0.10)))
+        }
+        .buttonStyle(.plain)
     }
 
     private var footer: some View {

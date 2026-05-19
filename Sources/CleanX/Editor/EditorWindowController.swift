@@ -35,8 +35,8 @@ final class EditorWindowController {
             canvasH = maxCanvasH
             canvasW = canvasH * aspect
         }
-        let targetW = max(canvasW + chromeW, 700)
-        let targetH = max(canvasH + chromeH, 480)
+        let targetW = max(canvasW + chromeW, 980)
+        let targetH = max(canvasH + chromeH, 640)
         _ = displayPointsH
 
         let window = NSWindow(
@@ -48,6 +48,8 @@ final class EditorWindowController {
         window.title = "CleanX Editor"
         window.titlebarAppearsTransparent = false
         window.isReleasedWhenClosed = false
+        window.minSize = NSSize(width: 820, height: 560)
+        window.setContentSize(NSSize(width: targetW, height: targetH))
         window.center()
         self.window = window
         window.contentView = NSHostingView(rootView: EditorView(

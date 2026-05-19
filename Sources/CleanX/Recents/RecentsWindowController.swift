@@ -30,23 +30,20 @@ final class RecentsWindowController {
         )
         let panel = NSPanel(
             contentRect: NSRect(origin: origin, size: size),
-            styleMask: [.borderless, .resizable, .nonactivatingPanel, .fullSizeContentView],
+            styleMask: [.titled, .closable, .resizable, .fullSizeContentView],
             backing: .buffered,
             defer: false
         )
         panel.title = "Recent Captures"
+        panel.titlebarAppearsTransparent = true
+        panel.titleVisibility = .hidden
         panel.isFloatingPanel = true
         panel.level = .floating
         panel.hidesOnDeactivate = false
         panel.collectionBehavior = [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary]
         panel.isReleasedWhenClosed = false
-        // Window-drag enabled, but DraggableImageNSView returns
-        // mouseDownCanMoveWindow=false so tile drags are real drag sessions,
-        // not window moves. Header/gaps still move the window.
-        panel.isMovableByWindowBackground = true
-        panel.backgroundColor = .clear
-        panel.isOpaque = false
-        panel.hasShadow = true
+        panel.isMovableByWindowBackground = false
+        panel.minSize = NSSize(width: 720, height: 280)
 
         panel.contentView = NSHostingView(rootView: RecentsView(
             store: RecentsStore.shared,
@@ -55,6 +52,7 @@ final class RecentsWindowController {
         ))
         self.panel = panel
         panel.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     func close() {

@@ -16,6 +16,15 @@ final class EditorModel: ObservableObject {
     init(baseImage: CGImage, sourceRect: CGRect) {
         self.baseImage = baseImage
         self.sourceRect = sourceRect
+        // Defaults scaled to image pixel size — keeps strokes and text
+        // visually consistent across capture resolutions.
+        let h = CGFloat(baseImage.height)
+        let scale = max(h / 1000.0, 1.0)
+        self.style = AnnotationStyle(
+            color: .systemRed,
+            strokeWidth: max(4, 4 * scale),
+            fontSize: max(28, 28 * scale)
+        )
     }
 
     func add(_ annotation: Annotation) {

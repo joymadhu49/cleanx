@@ -60,18 +60,11 @@ final class QuickAccessController {
 
         guard let screen = NSScreen.main else { return }
 
-        let aspect = CGFloat(image.width) / max(CGFloat(image.height), 1)
-        let targetW: CGFloat = 240
-        let targetH: CGFloat = 170
-        var thumbW: CGFloat
-        var thumbH: CGFloat
-        if aspect > targetW / targetH {
-            thumbW = targetW
-            thumbH = thumbW / aspect
-        } else {
-            thumbH = targetH
-            thumbW = thumbH * aspect
-        }
+        // Fixed-size thumb box. Every capture renders into the same panel
+        // footprint regardless of source dimensions — image is aspect-fit
+        // (letterboxed/pillarboxed) inside.
+        let thumbW: CGFloat = 240
+        let thumbH: CGFloat = 170
         let panelW = thumbW + 48
         let panelH = thumbH + 48
 
@@ -252,6 +245,8 @@ struct QuickAccessView: View {
                 Image(decorative: state.image, scale: 1.0)
                     .resizable()
                     .interpolation(.high)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: thumbSize.width, height: thumbSize.height)
                     .clipShape(RoundedRectangle(cornerRadius: 6))
             }
         }
